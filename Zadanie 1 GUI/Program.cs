@@ -333,6 +333,7 @@ class Program
     }
 
 
+    //Other Methods
 
     // WEB Data Getter
     static string GetData(string URL)
@@ -344,10 +345,7 @@ class Program
 
         return client.DownloadString(URL);     // Download and return content
     }
-
-
-    //Other Methods
-
+    
     // Print methods
     static void PrintAll(List<Sentence> sentencesList)
     {
