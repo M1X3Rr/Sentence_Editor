@@ -19,6 +19,7 @@
 ***************************************************************************************************************/
 
 using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 
 public class Sentence
@@ -43,6 +44,11 @@ public class Sentence
     public void EditContent(string newContent)
     {
         Content = newContent;
+    }
+
+    public void UpdateID(int newID)
+    {
+        ID = newID;
     }
 }
 
@@ -87,6 +93,7 @@ class Program
     {
         while (true) // Menu loop
         {
+            Console.Clear();
             Console.WriteLine("MENU:" +
                               "\np - print a sentence" +
                               "\na - add a sentence" +
@@ -243,6 +250,9 @@ class Program
                 // Remove the found sentence from the list
                 sentencesList.Remove(sentenceToDelete);
                 Console.WriteLine($"Sentence with ID {id} deleted successfully.");
+
+                // Update IDs of the remaining sentences
+                UpdateRemainingIDs(sentencesList, id);
             }
             else
             {
@@ -253,6 +263,18 @@ class Program
         {
             Console.WriteLine("Invalid input. Please enter a valid ID.");
         }
+    }
+
+    static void UpdateRemainingIDs(List<Sentence> sentencesList, int deletedId)
+    {
+        foreach (Sentence sentence in sentencesList)
+        {
+            if (sentence.ID > deletedId)
+            {
+                sentence.UpdateID(sentence.ID - 1);
+            }
+        }
+        Console.WriteLine("IDs of remaining sentences updated.");
     }
 
 
@@ -333,6 +355,7 @@ class Program
     }
 
 
+    //Other Methods
 
     // WEB Data Getter
     static string GetData(string URL)
@@ -344,9 +367,6 @@ class Program
 
         return client.DownloadString(URL);     // Download and return content
     }
-
-
-    //Other Methods
 
     // Print methods
     static void PrintAll(List<Sentence> sentencesList)
